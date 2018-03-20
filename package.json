@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jasonyu0100/TerrainGame#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "socket.io": "^2.0.4"
   }
 }
