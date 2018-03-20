@@ -4,14 +4,26 @@ const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server);
 
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'))
 })
 
 io.on('connection', function(socket) {
-	console.log('a user connected');
+    console.log('a user connected');
+    socket.on('disconnect',()=> {
+        console.log('user disconnected')
+    });
+
+    socket.on('chat message', function(msg){
+        console.log('message: ' + msg);
+        io.emit('chat message', msg);
+        socket.emit('sent', msg);
+    });
 });
 
-app.listen(8000, () => {
+
+
+server.listen(8000, () => {
     console.log('Online at http://localhost:8000')
 })
