@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jasonyu0100/TerrainGame/issues"
   },
-  "homepage": "https://github.com/jasonyu0100/TerrainGame#readme"
+  "homepage": "https://github.com/jasonyu0100/TerrainGame#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
