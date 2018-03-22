@@ -9,6 +9,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'))
 })
 
+app.use(express.static('public'))
+app.use('/static', express.static('public'))
+
 io.on('connection', function(socket) {
     console.log('a user connected');
     socket.on('disconnect',()=> {
