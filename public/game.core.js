@@ -2,7 +2,7 @@
 // Initialisation for each mode is different.
 
 class Game {
-	constructor(options) {
+    constructor(options) {
         this.app = options.app
         this.isClient = options.client // Means this code is running on the client
         if (this.isClient) {
@@ -25,9 +25,9 @@ class Game {
             100,100,
             120,150,
             140,100
-		])
-		graphics.endFill()
-		this.app.stage.addChild(graphics)
+        ])
+    	graphics.endFill()
+        this.app.stage.addChild(graphics)
         return graphics
-	}
+    }
 }
