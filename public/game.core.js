@@ -12,13 +12,13 @@ class Game {
         } else {
             // todo
         }
-	}
+    }
 
-	gameLoop(delta) {
-		this.mainPlayer.x += 2
-	}
+    gameLoop(delta) {
+        this.mainPlayer.x += 2
+    }
 
-	createPlayer() {
+    createPlayer() {
         let graphics = new PIXI.Graphics()
         graphics.beginFill(0x00FFFF)
         graphics.drawPolygon([
