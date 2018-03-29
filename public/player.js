@@ -11,8 +11,8 @@ class Map extends PIXI.Container {
                 let square = new PIXI.Graphics();
                 square.lineStyle(1, 0x1a2624, 1);
                 square.drawRect(0,0, size, size);
-                square.position.x = 100 * i;
-                square.position.y = 100 * j;
+                square.position.x = size * i;
+                square.position.y = size * j;
                 this.grid[j][i] = square
                 this.addChild(square);
             }
@@ -20,6 +20,8 @@ class Map extends PIXI.Container {
         
     }
 }
+
+
 
 class Player {
 	constructor(game, sprite) {
@@ -31,8 +33,9 @@ class Player {
 		this.acceleration = new Vector(0, 0)
 	}
 
-	update() {
+	update(delta) {
         this.velocity.mult(new Vector(0.98, 0.98)) // Friction
+        this.acceleration.mult(new Vector(delta, delta)) // time delta
         this.velocity.add(this.acceleration)
 		this.position.add(this.velocity)
         this.acceleration.mult(new Vector(0,0))
@@ -49,10 +52,10 @@ class Player {
 		this.sprite.y = this.position.y
 	}
 
-	boost() {
+	boost(delta) {
 		let angle = (this.bearing) / 180 * Math.PI
 		let magnitude = 0.6;
-		let direction = new AngleVector(angle, magnitude);
+		let direction = new AngleVector(angle, magnitude)
 		this.applyForce(direction)
 	}
 

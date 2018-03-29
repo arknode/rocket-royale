@@ -17,15 +17,19 @@ class Game {
                 this.keyboard[e.keyCode] = false
             })
 
-            this.app.stage.position.set(app.screen.width/2, app.screen.height/2)
+            this.camera = new PIXI.Container()
+            this.camera.position.set(app.screen.width/2, app.screen.height/2)
+            this.app.stage.addChild(this.camera)
 
-            this.map = new Map(this, 20, 100)
-            this.app.stage.addChild(this.map)
+            // this.app.stage.position.set(app.screen.width/2, app.screen.height/2)
+
+            this.map = new Map(this, 15, 200)
+            this.camera.addChild(this.map)
             this.player = this.createPlayer()
 
             this.text = new PIXI.Text('Position:')
             this.text.style.fill = 'white'
-            this.app.stage.addChild(this.text)
+            this.app.stage.addChild(this.text) // hud
 
             
             // todo
@@ -43,14 +47,14 @@ class Game {
 
     gameLoop(delta) {
         this.text.text = 'Position: ' + Math.floor(this.player.position.x / 100) + ', ' + Math.floor(this.player.position.y / 100)
-        this.text.position.set(
-            this.player.position.x - this.app.screen.width/2 + 10, 
-            this.player.position.y - this.app.screen.height/2 + 10
-        )
-        this.app.stage.pivot.copy(this.player.position)
+        this.text.text += '\nFPS: ' + Math.round(this.app.ticker.FPS)
 
-        if (this.keyboard[32]) this.player.boost()
-        this.player.update()
+        this.text.position.set(10, 10)
+
+        this.camera.pivot.copy(this.player.position)
+
+        if (this.keyboard[32]) this.player.boost(delta)
+        this.player.update(delta)
     }
 
     createPlayer() {
@@ -71,6 +75,7 @@ class Game {
 
         graphics.x = this.map.width / 2
         graphics.y = this.map.height / 2
+        // graphics.cacheAsBitmap = true
 
         this.map.addChild(graphics)
 
