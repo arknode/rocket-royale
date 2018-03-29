@@ -49,7 +49,11 @@ class Vector {
 
 	toAngle(radians) {
 		return radians * 180 / Math.PI
-	}
+    }
+    
+    copy() {
+        return new Vector(this.x, this.y)
+    }
 }
 
 class AngleVector extends Vector {

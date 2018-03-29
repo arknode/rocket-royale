@@ -1,11 +1,15 @@
 const app = new PIXI.Application({
-    width: 600, 
-    height: 600,
+    width: window.innerWidth, 
+    height: window.innerHeight,
     antialias: true,
     interactive:true,
     transparent: false,
     forceCanvas: false,
 });
+
+window.onwheel = event => { // prevent scrolling
+    event.preventDefault()
+}
 
 document.body.appendChild(app.view)
 
