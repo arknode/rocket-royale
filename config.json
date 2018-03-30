@@ -1,3 +1,0 @@
-{
-    "mongo_uri": "mongodb://jasonyu0100:i2F89N5yZlExAKQy@cluster0-shard-00-00-wmybr.mongodb.net:27017,cluster0-shard-00-01-wmybr.mongodb.net:27017,cluster0-shard-00-02-wmybr.mongodb.net:27017/admin?replicaSet=Cluster0-shard-0&ssl=true"
-}
