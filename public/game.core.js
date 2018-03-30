@@ -23,7 +23,7 @@ class Game {
 
             // this.app.stage.position.set(app.screen.width/2, app.screen.height/2)
 
-            this.map = new Map(this, 15, 200)
+            this.map = new Map(this, 15, 100)
             this.camera.addChild(this.map)
             this.player = this.createPlayer()
 
@@ -48,14 +48,15 @@ class Game {
     gameLoop(delta) {
         this.text.text = 'Position: ' + Math.floor(this.player.position.x / 100) + ', ' + Math.floor(this.player.position.y / 100)
         this.text.text += '\nFPS: ' + Math.round(this.app.ticker.FPS)
-        this.text.text += '\nVelocity: (' + Math.round(this.player.velocity.x) + ', ' + Math.round(this.player.velocity.y) + ')'
+        this.text.text += '\nVelocity: ' +  Math.round((this.player.velocity.x ** 2 +  this.player.velocity.y ** 2) ** 0.5) + 'm/s'
         this.text.text += '\nBearing: ' + Math.round(this.player.bearing)
 
         this.text.position.set(10, 10)
 
         this.camera.pivot.copy(this.player.position)
 
-        if (this.keyboard[32]) this.player.boost(delta)
+        if (this.keyboard[32] || this.keyboard[87]) this.player.boost(delta)
+
         this.player.update(delta)
     }
 
@@ -78,18 +79,10 @@ class Game {
         ])
         graphics.endFill()
 
-        //Bounding Box
-        graphics.lineStyle(1,0xFFFFFF,1)
-        graphics.drawRect(-15,-50,30,50)
-
-
-        graphics.pivot.y = (-30);
-        // graphics.pivot.x = (110 + 140 + 125) / 3 // centroid of the triangle
-        // graphics.pivot.y = (150 + 150 +100) / 3
+        graphics.pivot.y = (-25);
 
         graphics.x = this.map.width / 2
         graphics.y = this.map.height / 2
-        // graphics.cacheAsBitmap = true
 
         this.map.addChild(graphics)
 
