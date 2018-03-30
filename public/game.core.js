@@ -41,8 +41,8 @@ class Game {
     }
 
     get mouseposition() {
-        let mouse = this.app.renderer.plugins.interaction.mouse.global;
-        return new Vector(mouse.x, mouse.y)
+        let localpos = this.app.renderer.plugins.interaction.mouse.getLocalPosition(this.map)
+        return new Vector(localpos.x, localpos.y)
     }
 
     gameLoop(delta) {

@@ -63,7 +63,7 @@ class Player extends Particle{
 
 	get bearing() {
         let mouse = this.game.mouseposition
-        let center = new Vector(this.app.screen.width/2, this.app.screen.height/2)
+        let center = new Vector(this.position.x, this.position.y)
 		return mouse.sub(center).getAngle()
 	}
 }
