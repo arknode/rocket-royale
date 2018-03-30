@@ -21,10 +21,9 @@ class Map extends PIXI.Container {
     }
 }
 
-
-
-class Player {
+class Player extends Particle{
 	constructor(game, sprite) {
+        super()
         this.game = game
         this.app = game.app
 		this.sprite = sprite
@@ -43,14 +42,14 @@ class Player {
 		this.updateSprite()
 	}
 
-	applyForce(vector) {
-        this.acceleration.add(vector);
-	}
-
 	updateSprite() {
 		this.sprite.x = this.position.x
 		this.sprite.y = this.position.y
 	}
+
+    applyFriction() {
+        
+    }
 
 	boost(delta) {
 		let angle = (this.bearing) / 180 * Math.PI

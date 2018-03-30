@@ -48,6 +48,8 @@ class Game {
     gameLoop(delta) {
         this.text.text = 'Position: ' + Math.floor(this.player.position.x / 100) + ', ' + Math.floor(this.player.position.y / 100)
         this.text.text += '\nFPS: ' + Math.round(this.app.ticker.FPS)
+        this.text.text += '\nVelocity: (' + Math.round(this.player.velocity.x) + ', ' + Math.round(this.player.velocity.y) + ')'
+        this.text.text += '\nBearing: ' + Math.round(this.player.bearing)
 
         this.text.position.set(10, 10)
 
