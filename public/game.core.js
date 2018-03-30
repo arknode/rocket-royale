@@ -70,6 +70,7 @@ class Game {
             125,100
         ])
 
+
         graphics.endFill()
 
         graphics.pivot.x = (110 + 140 + 125) / 3 // centroid of the triangle

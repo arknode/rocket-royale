@@ -29,7 +29,7 @@ class Vector {
 	}
 
 	normalize() {
-		let magnitude = Math.sqrt((this.x ** 2) + (this.y ** 2))
+		let magnitude = this.getMag()
 		this.div(new Vector(magnitude,magnitude));
 		return this
 	}
@@ -37,6 +37,10 @@ class Vector {
 	setMag(mag) {
 		this.mult(new Vector(mag,mag));
 		return this
+	}
+
+	getMag() {
+		return Math.sqrt(this.x ** 2 + this.y ** 2)
 	}
 
 	getAngle() {

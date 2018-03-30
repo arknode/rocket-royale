@@ -33,7 +33,8 @@ class Player extends Particle{
 	}
 
 	update(delta) {
-        this.velocity.mult(new Vector(0.98, 0.98)) // Friction
+        this.applyFriction()
+        // this.velocity.mult(new Vector(0.98, 0.98)) // Friction
         this.acceleration.mult(new Vector(delta, delta)) // time delta
         this.velocity.add(this.acceleration)
 		this.position.add(this.velocity)
@@ -48,7 +49,9 @@ class Player extends Particle{
 	}
 
     applyFriction() {
-        
+        let normal = this.velocity.copy().mult(new Vector(-1,-1))
+        normal.setMag(0.02)
+        this.applyForce(normal)
     }
 
 	boost(delta) {
