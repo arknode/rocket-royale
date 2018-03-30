@@ -10,7 +10,7 @@ class Particle {
         this.acceleration.add(vector);
 	}
 
-	getBoundingBox(width,length) {
-		
+	getBoundingBox(x,y,width,length) {
+
 	}
 }

@@ -64,17 +64,28 @@ class Game {
 
         graphics.beginFill(0x00FFFF)
         
+        // graphics.drawPolygon([
+        //     110,150,
+        //     140,150,
+        //     125,100
+        // ])
+
         graphics.drawPolygon([
-            110,150,
-            140,150,
-            125,100
+            0,-50,
+            -15,0,
+            0,-10,
+            15,0
         ])
-
-
         graphics.endFill()
 
-        graphics.pivot.x = (110 + 140 + 125) / 3 // centroid of the triangle
-        graphics.pivot.y = (150 + 150 +100) / 3
+        //Bounding Box
+        graphics.lineStyle(1,0xFFFFFF,1)
+        graphics.drawRect(-15,-50,30,50)
+
+
+        graphics.pivot.y = (-30);
+        // graphics.pivot.x = (110 + 140 + 125) / 3 // centroid of the triangle
+        // graphics.pivot.y = (150 + 150 +100) / 3
 
         graphics.x = this.map.width / 2
         graphics.y = this.map.height / 2
