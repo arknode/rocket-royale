@@ -12,9 +12,11 @@ class Game {
 
             window.addEventListener('keydown', e => {
                 this.keyboard[e.keyCode] = true
+                this.keyDown(e)
             })
             window.addEventListener('keyup', e => {
                 this.keyboard[e.keyCode] = false
+                this.keyUp(e)
             })
 
             this.camera = new PIXI.Container()
@@ -23,9 +25,10 @@ class Game {
 
             // this.app.stage.position.set(app.screen.width/2, app.screen.height/2)
 
-            this.map = new Map(this, 15, 100)
+            this.map = new Map(this, 100, 100)
             this.camera.addChild(this.map)
             this.player = this.createPlayer()
+            this.bullets = []
 
             this.text = new PIXI.Text('Position:')
             this.text.style.fill = 'white'
@@ -55,9 +58,21 @@ class Game {
 
         this.camera.pivot.copy(this.player.position)
 
-        if (this.keyboard[32] || this.keyboard[87]) this.player.boost(delta)
+        if (this.keyboard[32]) {
+            this.player.boost()
+        }
+
+        for (let [index, bullet] of this.bullets.entries()) {
+            bullet.update()
+            if (Math.abs(bullet.velocity.x) < 0.1 && Math.abs(bullet.velocity.y) < 0.1) {
+                this.map.removeChild(bullet.sprite)
+                this.bullets.splice(index, 1)
+            }
+            
+        }
 
         this.player.update(delta)
+
     }
 
     createPlayer() {
@@ -81,13 +96,24 @@ class Game {
 
         graphics.pivot.y = (-25);
 
-        graphics.x = this.map.width / 2
-        graphics.y = this.map.height / 2
+        graphics.x = Math.random() * this.map.width
+        graphics.y = Math.random() * this.map.height
 
         this.map.addChild(graphics)
 
         let player = new Player(this, graphics)
 
         return player
+    }
+
+    keyDown(e) {
+        if (e.keyCode === 87) {
+            this.player.shoot()
+        }
+    }
+
+    keyUp(e) {
+        
+
     }
 }

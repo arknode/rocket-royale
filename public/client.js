@@ -4,7 +4,7 @@ const app = new PIXI.Application({
     antialias: true,
     interactive:true,
     transparent: false,
-    forceCanvas: true,
+    // forceCanvas: true,
 });
 
 
