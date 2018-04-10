@@ -46,12 +46,29 @@ class Particle {
 
 }
 
-class Bullet extends Particle {
-    constructor(game, sprite, speed) {
+class Entity extends Particle {
+    constructor(game, sprite) {
         super()
-        this.position = new Vector(sprite.x, sprite.y)
         this.game = game
         this.sprite = sprite
+    }
+
+    get bearing() {
+        let mouse = this.game.mouseposition
+        let center = this.position
+        return mouse.sub(center).getAngle()
+    }
+
+    updateSprite() {
+        this.sprite.x = this.position.x
+        this.sprite.y = this.position.y
+    }
+}
+
+class Bullet extends Entity {
+    constructor(game, sprite, speed) {
+        super(game, sprite)
+        this.position = new Vector(sprite.x, sprite.y)
         this.sprite.rotation = (this.bearing + 90) / 180 * Math.PI
         let angle = (this.bearing) / 180 * Math.PI
         this.velocity = new AngleVector(angle, speed)
@@ -63,31 +80,16 @@ class Bullet extends Particle {
         
         this.velocity.add(this.acceleration)
         this.position.add(this.velocity)
-        // this.velocity.mult(new Vector(delta, delta))
         this.acceleration.mult(new Vector(0, 0))
 
         this.updateSprite()
     }
-
-    updateSprite() {
-        this.sprite.x = this.position.x
-        this.sprite.y = this.position.y
-    }
-
-    get bearing() {
-        let mouse = this.game.mouseposition
-        let center = this.position
-        return mouse.sub(center).getAngle()
-    }
 }
 
-class Player extends Particle {
+class Player extends Entity {
     constructor(game, sprite) {
-        super()
+        super(game, sprite)
         this.position = new Vector(sprite.x, sprite.y)
-        this.game = game
-        this.app = game.app
-        this.sprite = sprite
         this.friction = 0.02
     }
 
@@ -105,11 +107,6 @@ class Player extends Particle {
         this.updateSprite()
     }
 
-    updateSprite() {
-        this.sprite.x = this.position.x
-        this.sprite.y = this.position.y
-    }
-
     boost(magnitude=0.6) {
         let angle = (this.bearing) / 180 * Math.PI
         let direction = new AngleVector(angle, magnitude)
@@ -125,17 +122,12 @@ class Player extends Particle {
             -5,0,
             5,0
         ])
+        
         graphics.endFill()
         graphics.x = this.position.x
         graphics.y = this.position.y
 
         this.game.map.addChild(graphics)
         this.game.bullets.push(new Bullet(this.game, graphics, speed))
-    }
-
-    get bearing() {
-        let mouse = this.game.mouseposition
-        let center = this.position
-        return mouse.sub(center).getAngle()
     }
 }
