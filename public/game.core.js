@@ -44,16 +44,8 @@ class Game {
         this.bullets = []
 
         // Adding test triangle
-        let graphics = new PIXI.Graphics()
-        graphics.beginFill(0x00FFFF)
-        graphics.drawPolygon([
-            0,-50,
-            -15,0,
-            0,-10,
-            15,0
-        ])
-        console.log(graphics)
-        graphics.endFill()
+        let coords = [new Vector(0,0),new Vector(-5,-10),new Vector(-5,10)]
+        let graphics = new Polygon(coords)
         let position = new Vector(0,0)
         this.testTriangle = new Entity(this,graphics,position)
         this.map.addChild(graphics)

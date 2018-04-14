@@ -99,11 +99,9 @@ class Player extends Entity {
 
         // movement
         this.applyFriction(delta)
-
         this.velocity.add(this.acceleration)
         this.position.add(this.velocity, delta)
         this.acceleration.mult(new Vector(0,0))
-        // this.velocity.mult(new Vector(0, 0))
 
         this.updateSprite()
     }
@@ -133,26 +131,40 @@ class Player extends Entity {
     }
 }
 
-class Polygon {
+class Polygon extends PIXI.Graphics{
     constructor(points) {
+        super()
         this.points = points
-        this.triangles = this.getTriangles()
+        this.convexHull = this.getConvexHull()
+        this.triangles = this.getTriangles(this.convexHull)
+        // Creates Graphics
+        graphics.beginFill(0x00FFFF)
+        this.drawPolygon(this.getListPositionValues())
+        graphics.endFill()
+    }
+
+    getListPositionValues() {
+        let values = []
+        for (point of this.points) {
+            values.push(point.x)
+            values.push(point.y)
+        }
+        return values
     }
 
     getTriangles() {
-
+        return null
     }
 
-    getWrap() {
-        let leftMost = this.findLeftMostPoint(this.points)
-        let currentPoint = leftMost
+    getConvexHull() {
+        let currentPoint = this.findLeftMostPoint(this.points)
         let connections = []
         let originLine = Math.PI/2
         let count = 0
         while (True) {
             // print('Current Point:',currentPoint)
             connections.push(currentPoint)
-            currentPoint,minAngle = getNextPoint(currentPoint,this.points,originLine)
+            currentPoint,minAngle = this.getNextPoint(currentPoint,this.points,originLine)
             originLine -= minAngle
             if (currentPoint == connections[0] || count > 5) {
                 break
@@ -160,17 +172,18 @@ class Polygon {
                 count += 1
             }
         }
+        return connections
     }
 
     getNextPoint(currentPoint,points,originLine) {
-        let minAngle = None
-        let minAnglePoint = None
+        let minAngle = null
+        let minAnglePoint = null
         for (point of points) {
 		    if (point == currentPoint) {
                 continue
             }
-		    angle = this.getAngleToPoint(currentPoint,point,originLine)
-		    if (minAngle == None) {
+		    let angle = this.getAngleToPoint(currentPoint,point,originLine)
+		    if (minAngle == null) {
 			    minAnglePoint = point
 			    minAngle = angle
             } else if (angle < minAngle) {
