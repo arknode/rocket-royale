@@ -37,17 +37,9 @@ class Particle {
         this.acceleration.add(vector);
     }
 
-<<<<<<< HEAD
     applyFriction() {
-=======
-    getBoundingBox(x,y,width,length) { 
-        // TODO: 
-    }
-
-    applyFriction(delta=1) {
->>>>>>> 9e987c6c83276e7e27570398fb2e36818a0355c0
         let normal = this.velocity.copy().mult(new Vector(-1,-1))
-        normal.setMag(this.friction*delta)
+        normal.setMag(this.friction)
         this.applyForce(normal)
     }
 }

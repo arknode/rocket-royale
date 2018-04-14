@@ -7,16 +7,20 @@ class Game {
     }
 
     serverInit(options) {
+        console.log('Initialising on server.')
         this.server = options.server
-        this.players = options.player
+        this.players = options.players
         this.started = false
-        setInterval(this.physicsLoop, 16)
+        setInterval(this.PhysicsLoop, 16)
     }
 
     clientInit(options) {
+        console.log('Initialising on client.')
         this.app = options.app
         this.io = io()
-
+        // this.io.on('connected', (data) => {
+            
+        // })
         this.keyboard = {}
 
         window.addEventListener('keydown', e => {
@@ -66,7 +70,7 @@ class Game {
         return new Vector(localpos.x, localpos.y)
     }
 
-    serverPhysicsLoop() {
+    PhysicsLoop() {
         
     }
 
@@ -144,3 +148,5 @@ class Game {
 
     }
 }
+
+module.exports = Game
