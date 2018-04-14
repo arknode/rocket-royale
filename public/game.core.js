@@ -74,9 +74,9 @@ class Game {
         this.hudText.text += "\nDelta: " + delta 
         this.hudText.position.set(10, 10)
 
-        if (this.app.ticker.FPS > 55) {
-            this.camera.pivot.copy(this.player.position)
-        }
+        // if (this.app.ticker.FPS > 55) {
+        //     this.camera.pivot.copy(this.player.position)
+        // }
 
         if (this.keyboard[87]) {
             this.player.shoot(55, delta)
@@ -96,10 +96,11 @@ class Game {
         }
 
         this.player.update(delta)
-
-        if (this.app.ticker.FPS < 55) {
-            this.camera.pivot.copy(this.player.position)
-        }
+        
+        this.camera.pivot.copy(this.player.position)
+        // if (this.app.ticker.FPS < 55) {
+        //     this.camera.pivot.copy(this.player.position)
+        // }
         
 
     }
