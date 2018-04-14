@@ -39,6 +39,22 @@ class Game {
         this.player = this.createPlayer()
         this.bullets = []
 
+        // Adding test triangle
+        let graphics = new PIXI.Graphics()
+        graphics.beginFill(0x00FFFF)
+        graphics.drawPolygon([
+            0,-50,
+            -15,0,
+            0,-10,
+            15,0
+        ])
+        console.log(graphics)
+        graphics.endFill()
+        let position = new Vector(0,0)
+        this.testTriangle = new Entity(this,graphics,position)
+        this.map.addChild(graphics)
+
+        //End test
         this.hudText = new PIXI.Text('Position:')
         this.hudText.style.fill = 'white'
         this.app.stage.addChild(this.hudText) // hud
@@ -112,13 +128,9 @@ class Game {
         graphics.endFill()
 
         graphics.pivot.y = (-25);
-
-        graphics.x = Math.random() * this.map.width
-        graphics.y = Math.random() * this.map.height
-
         this.map.addChild(graphics)
-
-        let player = new Player(this, graphics)
+        let position = new Vector(Math.random() * this.map.width,Math.random() * this.map.height)
+        let player = new Player(this, graphics,position)
 
         return player
     }
