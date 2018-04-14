@@ -1,12 +1,12 @@
 const Game = require("./public/game.core.js")
 // class for game instances
 
-module.exports = class GameServer {
+class GameServer {
     // manages games and shit
-    constructor(io) {
+    constructor(sio) {
+        this.io = sio
         this.playerQueue = []
         this.games = []
-        io.on('connection', this.onConnection)
         
     }
 
@@ -29,4 +29,8 @@ module.exports = class GameServer {
             players: [client]
         })
     }
+
+
 }
+
+module.exports = GameServer

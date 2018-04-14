@@ -13,6 +13,10 @@ app.use(express.static('public'));
 
 game = new GameServer(io)
 
+io.on('connection', client => {
+    game.onConnection(client)
+})
+
 server.listen(8000, () => {
     console.log('Online at http://localhost:8000')
 })

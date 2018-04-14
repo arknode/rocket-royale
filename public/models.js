@@ -37,9 +37,9 @@ class Particle {
         this.acceleration.add(vector);
     }
 
-    applyFriction(delta) {
+    applyFriction() {
         let normal = this.velocity.copy().mult(new Vector(-1,-1))
-        normal.setMag(this.friction * delta)
+        normal.setMag(this.friction)
         this.applyForce(normal)
     }
 }
