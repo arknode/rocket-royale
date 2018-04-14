@@ -6,12 +6,17 @@ class Game {
         options.client ? this.clientInit(options) : this.serverInit(options)
     }
 
-    serverInit() {
-
+    serverInit(options) {
+        this.server = options.server
+        this.players = options.player
+        this.started = false
+        setInterval(this.physicsLoop, 16)
     }
 
     clientInit(options) {
         this.app = options.app
+        this.io = io()
+
         this.keyboard = {}
 
         window.addEventListener('keydown', e => {
@@ -37,12 +42,16 @@ class Game {
         this.hudText = new PIXI.Text('Position:')
         this.hudText.style.fill = 'white'
         this.app.stage.addChild(this.hudText) // hud
-        this.io = io()
+        
     }
 
     get mouseposition() {
         let localpos = this.app.renderer.plugins.interaction.mouse.getLocalPosition(this.map)
         return new Vector(localpos.x, localpos.y)
+    }
+
+    serverPhysicsLoop() {
+        
     }
 
     gameLoop(delta) {
