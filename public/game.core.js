@@ -141,6 +141,11 @@ class Game {
     }
 }
 
-if (!module === undefined) {
-    module.exports = Game
+if (typeof module === "object" && module && typeof module.exports === "object") {
+
+    // Expose jQuery as module.exports in loaders that implement the Node
+    // module pattern (including browserify). Do not create the global, since
+    // the user will be storing it themselves locally, and globals are frowned
+    // upon in the Node module world.
+    module.exports = Game;
 }
