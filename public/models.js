@@ -77,11 +77,9 @@ class Bullet extends Entity {
 
     update(delta) {
         this.applyFriction(delta)
-        
-        this.velocity.add(this.acceleration)
-        this.position.add(this.velocity, delta)
+        this.velocity.add(this.acceleration,delta)
+        this.position.add(this.velocity,delta)
         this.acceleration.mult(new Vector(0, 0))
-        // this.velocity.mult(new Vector(0, 0))
 
         this.updateSprite()
     }
@@ -123,11 +121,9 @@ class Player extends Entity {
         ])
 
         graphics.endFill()
-        graphics.x = this.position.x
-        graphics.y = this.position.y
-
+        let position = new Vector(this.position.x,this.position.y)
         this.game.map.addChild(graphics)
-        this.game.bullets.push(new Bullet(this.game, graphics, speed, delta))
+        this.game.bullets.push(new Bullet(this.game, graphics, speed, delta, position))
     }
 }
 
@@ -135,7 +131,7 @@ class Polygon extends PIXI.Graphics{
     constructor(points) {
         super()
         this.points = points
-        this.convexHull = this.getConvexHull()
+        this.convexHull = this.getConvexHull(points)
         this.triangles = this.getTriangles(this.convexHull)
         // Creates Graphics
         this.beginFill(0x00FFFF)
@@ -156,14 +152,14 @@ class Polygon extends PIXI.Graphics{
         return null
     }
 
-    getConvexHull() {
-        let currentPoint = this.findLeftMostPoint(this.points)
+    getConvexHull(points) {
+        let currentPoint = this.findLeftMostPoint(points)
         let connections = []
         let originLine = Math.PI/2
         let count = 0
         while (true) {
             connections.push(currentPoint)
-            let values = this.getNextPoint(currentPoint,this.points,originLine)
+            let values = this.getNextPoint(currentPoint,points,originLine)
             currentPoint = values[0]
             let minAngle = values[1]
             originLine -= minAngle
