@@ -163,11 +163,12 @@ class Polygon extends PIXI.Graphics{
         let count = 0
         console.log(currentPoint)
         while (5 == 5) {
-            break
             // print('Current Point:',currentPoint)
             // console.log(currentPoint)
             connections.push(currentPoint)
-            let [currentPoint,minAngle] = this.getNextPoint(currentPoint,this.points,originLine)
+            values = this.getNextPoint(currentPoint,this.points,originLine)
+            currentPoint = values[0]
+            let minAngle = values[1]
             originLine -= minAngle
             if (currentPoint == connections[0] || count > 5) {
                 break
