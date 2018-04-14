@@ -22,12 +22,11 @@ class Map extends PIXI.Container {
 }
 
 class Particle {
-    constructor(width,length) {
-        this.position = new Vector(0,0)
+    constructor(position) {
+        this.position = position
         this.velocity = new Vector(0,0)
         this.acceleration = new Vector(0,0)
         this.friction = 0
-        this.bondingBox = this.getBoundingBox(width,length)
     }
 
     get speed() {
@@ -38,10 +37,6 @@ class Particle {
         this.acceleration.add(vector);
     }
 
-    getBoundingBox(x,y,width,length) { 
-        // TODO: 
-    }
-
     applyFriction() {
         let normal = this.velocity.copy().mult(new Vector(-1,-1))
         normal.setMag(this.friction)
@@ -50,9 +45,11 @@ class Particle {
 }
 
 class Entity extends Particle {
-    constructor(game, sprite) {
-        super()
+    constructor(game, sprite, position) {
+        super(position)
         this.game = game
+        sprite.x = this.position.x
+        sprite.y = this.position.y
         this.sprite = sprite
     }
 
@@ -69,8 +66,8 @@ class Entity extends Particle {
 }
 
 class Bullet extends Entity {
-    constructor(game, sprite, speed, delta) {
-        super(game, sprite)
+    constructor(game, sprite, speed, delta, position) {
+        super(game, sprite, position)
         this.position = new Vector(sprite.x, sprite.y)
         this.sprite.rotation = (this.bearing + 90) / 180 * Math.PI
         let angle = (this.bearing) / 180 * Math.PI
@@ -90,9 +87,8 @@ class Bullet extends Entity {
 }
 
 class Player extends Entity {
-    constructor(game, sprite) {
-        super(game, sprite)
-        this.position = new Vector(sprite.x, sprite.y)
+    constructor(game, sprite, position) {
+        super(game, sprite, position)
         this.friction = 0.02
     }
 
@@ -132,5 +128,70 @@ class Player extends Entity {
 
         this.game.map.addChild(graphics)
         this.game.bullets.push(new Bullet(this.game, graphics, speed, delta))
+    }
+}
+
+class Polygon {
+    constructor(points) {
+        this.points = points
+        this.triangles = this.getTriangles()
+    }
+
+    getTriangles() {
+
+    }
+
+    getWrap() {
+        let leftMost = this.findLeftMostPoint(this.points)
+        let currentPoint = leftMost
+        let connections = []
+        let originLine = Math.PI/2
+        let count = 0
+        while (True) {
+            // print('Current Point:',currentPoint)
+            connections.push(currentPoint)
+            currentPoint,minAngle = getNextPoint(currentPoint,this.points,originLine)
+            originLine -= minAngle
+            if (currentPoint == connections[0] || count > 5) {
+                break
+            } else {
+                count += 1
+            }
+        }
+    }
+
+    getNextPoint(currentPoint,points,originLine) {
+        let minAngle = None
+        let minAnglePoint = None
+        for (point of points) {
+		    if (point == currentPoint) {
+                continue
+            }
+		    angle = this.getAngleToPoint(currentPoint,point,originLine)
+		    if (minAngle == None) {
+			    minAnglePoint = point
+			    minAngle = angle
+            } else if (angle < minAngle) {
+			    minAnglePoint = point
+                minAngle = angle
+            }
+        }
+        return [minAnglePoint,minAngle]
+    }
+
+    getAngleToPoint(currentPoint,checkPoint,originLine) {
+        let X = checkPoint.x - currentPoint.x
+        let Y = checkPoint.y - currentPoint.y
+        let angle = Math.atan2(Y,X)
+        angle = (originLine - angle)
+        return angle
+    }
+
+    findLeftMostPoint(points) {
+        let leftMost = points[0]
+        for (point of points) {
+            if (point[0] < leftMost[0]) leftMost = point
+        }
+        return leftMost
     }
 }
