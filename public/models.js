@@ -145,7 +145,7 @@ class Polygon extends PIXI.Graphics{
 
     getListPositionValues() {
         let values = []
-        for (point of this.points) {
+        for (let point of this.points) {
             values.push(point.x)
             values.push(point.y)
         }
@@ -178,7 +178,7 @@ class Polygon extends PIXI.Graphics{
     getNextPoint(currentPoint,points,originLine) {
         let minAngle = null
         let minAnglePoint = null
-        for (point of points) {
+        for (let point of points) {
 		    if (point == currentPoint) {
                 continue
             }
@@ -204,8 +204,8 @@ class Polygon extends PIXI.Graphics{
 
     findLeftMostPoint(points) {
         let leftMost = points[0]
-        for (point of points) {
-            if (point[0] < leftMost[0]) leftMost = point
+        for (let point of points) {
+            if (point.x < leftMost.x) leftMost = point
         }
         return leftMost
     }
