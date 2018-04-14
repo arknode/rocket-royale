@@ -111,16 +111,9 @@ class Player extends Entity {
     }
 
     shoot(speed=55, delta=1) {
-        let graphics = new PIXI.Graphics()
-
-        graphics.beginFill(0x00FF00)
-        graphics.drawPolygon([
-            0,-30,
-            -5,0,
-            5,0
-        ])
-
-        graphics.endFill()
+        coords = [new Vector(0,-30),new Vector(-5,0),new Vector(5,0)]
+        let color = 0x00FFFF
+        let graphics = Polygon(coords,color)
         let position = new Vector(this.position.x,this.position.y)
         this.game.map.addChild(graphics)
         this.game.bullets.push(new Bullet(this.game, graphics, speed, delta, position))
@@ -128,13 +121,14 @@ class Player extends Entity {
 }
 
 class Polygon extends PIXI.Graphics{
-    constructor(points) {
+    constructor(points,color) {
         super()
+        this.color = color
         this.points = points
         this.convexHull = this.getConvexHull(points)
         this.triangles = this.getTriangles(this.convexHull)
         // Creates Graphics
-        this.beginFill(0x00FFFF)
+        this.beginFill(this.color)
         this.drawPolygon(this.getListPositionValues())
         this.endFill()
     }
@@ -148,7 +142,8 @@ class Polygon extends PIXI.Graphics{
         return values
     }
 
-    getTriangles() {
+    getTriangles(convexHull) {
+        console.log(convexHull)
         return null
     }
 

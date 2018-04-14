@@ -45,12 +45,13 @@ class Game {
 
         // Adding test triangle
         let coords = [new Vector(0,0),new Vector(-5,-10),new Vector(-5,10)]
-        let graphics = new Polygon(coords)
+        let color = 0x00FFFF
+        let graphics = new Polygon(coords,color)
         let position = new Vector(0,0)
         this.testTriangle = new Entity(this,graphics,position)
         this.map.addChild(graphics)
+        //End Triangle Test
 
-        //End test
         this.hudText = new PIXI.Text('Position:')
         this.hudText.style.fill = 'white'
         this.app.stage.addChild(this.hudText) // hud
@@ -96,7 +97,7 @@ class Game {
         }
 
         this.player.update(delta)
-        
+
         this.camera.pivot.copy(this.player.position)
         // if (this.app.ticker.FPS < 55) {
         //     this.camera.pivot.copy(this.player.position)
@@ -106,29 +107,13 @@ class Game {
     }
 
     createPlayer() {
-        let graphics = new PIXI.Graphics()
-
-        graphics.beginFill(0x00FFFF)
-        
-        // graphics.drawPolygon([
-        //     110,150,
-        //     140,150,
-        //     125,100
-        // ])
-
-        graphics.drawPolygon([
-            0,-50,
-            -15,0,
-            0,-10,
-            15,0
-        ])
-        graphics.endFill()
-
-        graphics.pivot.y = (-25);
+        let coords = [new Vector(0,-50),new Vector(-15,0),new Vector(0,-10),new Vector(15,0)]
+        let color = 0x00FFFF
+        let graphics = new Polygon(coords,color)
+        graphics.pivot.y = (-25)
         this.map.addChild(graphics)
         let position = new Vector(Math.random() * this.map.width,Math.random() * this.map.height)
         let player = new Player(this, graphics,position)
-
         return player
     }
 
