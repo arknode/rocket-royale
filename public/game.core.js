@@ -140,3 +140,7 @@ class Game {
 
     }
 }
+
+if (!module === undefined) {
+    module.exports = Game
+}

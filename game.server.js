@@ -1,5 +1,5 @@
-require("./public/game.core.js")
-// class for game instances
+const Game = require("./public/game.core.js")
+
 
 class GameServer {
     // manages games and shit
