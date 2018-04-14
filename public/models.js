@@ -42,9 +42,9 @@ class Particle {
         // TODO: 
     }
 
-    applyFriction() {
+    applyFriction(delta=1) {
         let normal = this.velocity.copy().mult(new Vector(-1,-1))
-        normal.setMag(this.friction)
+        normal.setMag(this.friction*delta)
         this.applyForce(normal)
     }
 }
@@ -79,11 +79,12 @@ class Bullet extends Entity {
     }
 
     update(delta) {
-        this.applyFriction()
+        this.applyFriction(delta)
         
         this.velocity.add(this.acceleration)
-        this.position.add(this.velocity)
+        this.position.add(this.velocity, delta)
         this.acceleration.mult(new Vector(0, 0))
+        // this.velocity.mult(new Vector(0, 0))
 
         this.updateSprite()
     }
@@ -101,11 +102,12 @@ class Player extends Entity {
         this.sprite.rotation = (this.bearing + 90) / 180 * Math.PI 
 
         // movement
-        this.applyFriction()
-        // this.acceleration.mult(new Vector(delta, delta)) // time delta
+        this.applyFriction(delta)
+
         this.velocity.add(this.acceleration)
-        this.position.add(this.velocity)
+        this.position.add(this.velocity, delta)
         this.acceleration.mult(new Vector(0,0))
+        // this.velocity.mult(new Vector(0, 0))
 
         this.updateSprite()
     }

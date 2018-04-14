@@ -37,6 +37,7 @@ class Game {
         this.hudText = new PIXI.Text('Position:')
         this.hudText.style.fill = 'white'
         this.app.stage.addChild(this.hudText) // hud
+        this.io = io()
     }
 
     get mouseposition() {
@@ -52,7 +53,9 @@ class Game {
         this.hudText.text += "\nDelta: " + delta 
         this.hudText.position.set(10, 10)
 
-        this.camera.pivot.copy(this.player.position)
+        if (this.app.ticker.FPS > 55) {
+            this.camera.pivot.copy(this.player.position)
+        }
 
         if (this.keyboard[87]) {
             this.player.shoot(55, delta)
@@ -72,6 +75,11 @@ class Game {
         }
 
         this.player.update(delta)
+
+        if (this.app.ticker.FPS < 55) {
+            this.camera.pivot.copy(this.player.position)
+        }
+        
 
     }
 
