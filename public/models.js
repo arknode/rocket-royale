@@ -138,9 +138,9 @@ class Polygon extends PIXI.Graphics{
         this.convexHull = this.getConvexHull()
         this.triangles = this.getTriangles(this.convexHull)
         // Creates Graphics
-        graphics.beginFill(0x00FFFF)
+        this.beginFill(0x00FFFF)
         this.drawPolygon(this.getListPositionValues())
-        graphics.endFill()
+        this.endFill()
     }
 
     getListPositionValues() {
@@ -161,10 +161,13 @@ class Polygon extends PIXI.Graphics{
         let connections = []
         let originLine = Math.PI/2
         let count = 0
-        while (True) {
+        console.log(currentPoint)
+        while (5 == 5) {
+            break
             // print('Current Point:',currentPoint)
+            // console.log(currentPoint)
             connections.push(currentPoint)
-            currentPoint,minAngle = this.getNextPoint(currentPoint,this.points,originLine)
+            let [currentPoint,minAngle] = this.getNextPoint(currentPoint,this.points,originLine)
             originLine -= minAngle
             if (currentPoint == connections[0] || count > 5) {
                 break
