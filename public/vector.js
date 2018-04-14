@@ -4,9 +4,9 @@ class Vector {
         this.y = y;
     }
 
-    add(vector) {
-        this.x += vector.x;
-        this.y += vector.y;
+    add(vector, delta=1) {
+        this.x += vector.x * delta;
+        this.y += vector.y * delta;
         return this
     }
 

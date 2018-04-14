@@ -9,7 +9,7 @@ class Map extends PIXI.Container {
             this.grid[j] = []
             for (let i = 0; i < length; i++) {
                 let square = new PIXI.Graphics();
-                square.lineStyle(1, 0x1a2624, 1);
+                square.lineStyle(1, 0x2c383a, 1);
                 square.drawRect(0,0, size, size);
                 square.position.x = size * i;
                 square.position.y = size * j;
@@ -30,12 +30,16 @@ class Particle {
         this.bondingBox = this.getBoundingBox(width,length)
     }
 
+    get speed() {
+        return (this.velocity.x ** 2 +  this.velocity.y ** 2) ** 0.5
+    }
+
     applyForce(vector) {
         this.acceleration.add(vector);
     }
 
-    getBoundingBox(x,y,width,length) {
-
+    getBoundingBox(x,y,width,length) { 
+        // TODO: 
     }
 
     applyFriction() {
@@ -43,7 +47,6 @@ class Particle {
         normal.setMag(this.friction)
         this.applyForce(normal)
     }
-
 }
 
 class Entity extends Particle {
@@ -66,12 +69,12 @@ class Entity extends Particle {
 }
 
 class Bullet extends Entity {
-    constructor(game, sprite, speed) {
+    constructor(game, sprite, speed, delta) {
         super(game, sprite)
         this.position = new Vector(sprite.x, sprite.y)
         this.sprite.rotation = (this.bearing + 90) / 180 * Math.PI
         let angle = (this.bearing) / 180 * Math.PI
-        this.velocity = new AngleVector(angle, speed)
+        this.velocity = new AngleVector(angle, speed*delta)
         this.friction = 0.01
     }
 
@@ -99,7 +102,7 @@ class Player extends Entity {
 
         // movement
         this.applyFriction()
-        this.acceleration.mult(new Vector(delta, delta)) // time delta
+        // this.acceleration.mult(new Vector(delta, delta)) // time delta
         this.velocity.add(this.acceleration)
         this.position.add(this.velocity)
         this.acceleration.mult(new Vector(0,0))
@@ -107,13 +110,13 @@ class Player extends Entity {
         this.updateSprite()
     }
 
-    boost(magnitude=0.6) {
+    boost(magnitude=0.6, delta=1) {
         let angle = (this.bearing) / 180 * Math.PI
-        let direction = new AngleVector(angle, magnitude)
+        let direction = new AngleVector(angle, magnitude*delta)
         this.applyForce(direction)
     }
 
-    shoot(speed=55) {
+    shoot(speed=55, delta=1) {
         let graphics = new PIXI.Graphics()
 
         graphics.beginFill(0x00FF00)
@@ -122,12 +125,12 @@ class Player extends Entity {
             -5,0,
             5,0
         ])
-        
+
         graphics.endFill()
         graphics.x = this.position.x
         graphics.y = this.position.y
 
         this.game.map.addChild(graphics)
-        this.game.bullets.push(new Bullet(this.game, graphics, speed))
+        this.game.bullets.push(new Bullet(this.game, graphics, speed, delta))
     }
 }

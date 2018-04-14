@@ -4,9 +4,11 @@ const app = new PIXI.Application({
     antialias: true,
     interactive:true,
     transparent: false,
-    forceCanvas: true, 
+    forceCanvas: false,
 });
 
+
+// app.renderer.backgroundColor = 0x00172d
 
 
 document.body.appendChild(app.view)

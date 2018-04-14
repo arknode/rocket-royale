@@ -3,44 +3,40 @@
 
 class Game {
     constructor(options) {
+        options.client ? this.clientInit(options) : this.serverInit(options)
+    }
+
+    serverInit() {
+
+    }
+
+    clientInit(options) {
         this.app = options.app
-        this.isClient = options.client // Means this code is running on the client
+        this.keyboard = {}
 
-        if (this.isClient) {
+        window.addEventListener('keydown', e => {
+            this.keyboard[e.keyCode] = true
+            this.keyDown(e)
+        })
+        window.addEventListener('keyup', e => {
+            this.keyboard[e.keyCode] = false
+            this.keyUp(e)
+        })
 
-            this.keyboard = {}
+        this.camera = new PIXI.Container()
+        this.camera.position.set(app.screen.width/2, app.screen.height/2)
+        this.app.stage.addChild(this.camera)
 
-            window.addEventListener('keydown', e => {
-                this.keyboard[e.keyCode] = true
-                this.keyDown(e)
-            })
-            window.addEventListener('keyup', e => {
-                this.keyboard[e.keyCode] = false
-                this.keyUp(e)
-            })
+        // this.app.stage.position.set(app.screen.width/2, app.screen.height/2)
 
-            this.camera = new PIXI.Container()
-            this.camera.position.set(app.screen.width/2, app.screen.height/2)
-            this.app.stage.addChild(this.camera)
+        this.map = new Map(this, 100, 100)
+        this.camera.addChild(this.map)
+        this.player = this.createPlayer()
+        this.bullets = []
 
-            // this.app.stage.position.set(app.screen.width/2, app.screen.height/2)
-
-            this.map = new Map(this, 100, 100)
-            this.camera.addChild(this.map)
-            this.player = this.createPlayer()
-            this.bullets = []
-
-            this.text = new PIXI.Text('Position:')
-            this.text.style.fill = 'white'
-            this.app.stage.addChild(this.text) // hud
-
-            
-            // todo
-        } else {
-            // todo
-        }
-
-        let test = new Vector(32,16);
+        this.hudText = new PIXI.Text('Position:')
+        this.hudText.style.fill = 'white'
+        this.app.stage.addChild(this.hudText) // hud
     }
 
     get mouseposition() {
@@ -49,17 +45,21 @@ class Game {
     }
 
     gameLoop(delta) {
-        this.text.text = 'Position: ' + Math.floor(this.player.position.x / 100) + ', ' + Math.floor(this.player.position.y / 100)
-        this.text.text += '\nFPS: ' + Math.round(this.app.ticker.FPS)
-        this.text.text += '\nVelocity: ' +  Math.round((this.player.velocity.x ** 2 +  this.player.velocity.y ** 2) ** 0.5) + 'm/s'
-        this.text.text += '\nBearing: ' + Math.round(this.player.bearing)
-
-        this.text.position.set(10, 10)
+        this.hudText.text = 'Position: ' + Math.floor(this.player.position.x / 100) + ', ' + Math.floor(this.player.position.y / 100)
+        this.hudText.text += '\nFPS: ' + Math.round(this.app.ticker.FPS)
+        this.hudText.text += '\nVelocity: ' +  Math.round(this.player.speed) + 'm/s'
+        this.hudText.text += '\nBearing: ' + Math.round(this.player.bearing)
+        this.hudText.text += "\nDelta: " + delta 
+        this.hudText.position.set(10, 10)
 
         this.camera.pivot.copy(this.player.position)
 
+        if (this.keyboard[87]) {
+            this.player.shoot(55, delta)
+        }
+
         if (this.keyboard[32]) {
-            this.player.boost()
+            this.player.boost(0.6, delta)
         }
 
         for (let [index, bullet] of this.bullets.entries()) {
@@ -107,9 +107,7 @@ class Game {
     }
 
     keyDown(e) {
-        if (e.keyCode === 87) {
-            this.player.shoot()
-        }
+        
     }
 
     keyUp(e) {
