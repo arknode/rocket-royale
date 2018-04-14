@@ -16,26 +16,26 @@ class Vector {
         return this
     }
 
-    mult(vector) {
-        this.x *= vector.x;
-        this.y *= vector.y;
+    mult(mag) {
+        this.x *= mag;
+        this.y *= mag;
         return this
     }
 
-    div(vector) {
-        this.x /= vector.x;
-        this.y /= vector.y;
+    div(mag) {
+        this.x /= mag;
+        this.y /= mag;
         return this
     }
 
     normalize() {
         let magnitude = this.getMag()
-        this.div(new Vector(magnitude,magnitude));
+        this.div(magnitude);
         return this
     }
 
     setMag(mag) {
-        this.mult(new Vector(mag,mag));
+        this.mult(mag);
         return this
     }
 
